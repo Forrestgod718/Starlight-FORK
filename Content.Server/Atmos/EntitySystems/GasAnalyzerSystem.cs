@@ -1,7 +1,5 @@
 using System.Linq;
 using Content.Server.Atmos.Components;
-using Content.Server.MiningFluid.Components;
-using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
 using Content.Server.Popups;
 using Content.Shared.Atmos;
@@ -12,7 +10,10 @@ using Content.Shared.NodeContainer;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
 using static Content.Shared.Atmos.Components.GasAnalyzerComponent;
-
+// starlight-start
+using Content.Server.MiningFluid.Components;
+using Content.Server.NodeContainer;
+// starlight-end
 namespace Content.Server.Atmos.EntitySystems;
 
 [UsedImplicitly]
@@ -23,7 +24,7 @@ public sealed partial class GasAnalyzerSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private UserInterfaceSystem _userInterface = default!;
     [Dependency] private SharedInteractionSystem _interactionSystem = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private SharedTransformSystem _xform = default!; // Starlight
 
     /// <summary>
     /// Minimum moles of a gas to be sent to the client.
@@ -223,7 +224,7 @@ public sealed partial class GasAnalyzerSystem : EntitySystem
                 component.Target = null;
             }
         }
-
+// Starlight-Start
         var deviceName = component.Target != null ? Name(component.Target.Value) : string.Empty;
         var deviceUid = GetNetEntity(component.Target) ?? NetEntity.Invalid;
 
@@ -242,15 +243,15 @@ public sealed partial class GasAnalyzerSystem : EntitySystem
                 deviceUid = GetNetEntity(gridUid.Value);
             }
         }
-
+// Starlight-end
         // Don't bother sending a UI message with no content, and stop updating I guess?
         if (gasMixList.Count == 0)
             return false;
 
         _userInterface.ServerSendUiMessage(uid, GasAnalyzerUiKey.Key,
             new GasAnalyzerUserMessage(gasMixList.ToArray(),
-                deviceName,
-                deviceUid,
+                deviceName, // Starlight
+                deviceUid, // Starlight
                 deviceFlipped));
         return true;
     }
