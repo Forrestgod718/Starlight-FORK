@@ -53,6 +53,20 @@
     - type: IFF
       flags: HideLabel
       color: "#d67e27"
+    # Starlight-start
+    - type: TrappedFluid
+      seedUpperBound: 0.6 # These can be set at default of 1
+      seedLowerBound: 0.2
+      staticMixture: # IMPORTANT: Use *Mixture instead of air!!
+        temperature: 60 # Yall come up with temperature that makes sense
+        moles: # Maximum Moles per TILE, factors such as seed upper/lower bound also apply.
+          CarbonDioxide: 212
+          Nitrogen: 248
+      variableMixture:
+        Oxygen:
+          moles: 155
+          prob: 0.5
+    # Starlight-end
 
 - type: entity
   id: AsteroidDebrisSmall
